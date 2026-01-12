@@ -18,7 +18,7 @@
       --shadow: 0 18px 50px rgba(0,0,0,.28);
       --ease: cubic-bezier(.2,.8,.2,1);
 
-      /* NEW: Slider Shells (Pfeile + Pagination im Container, Radius 50px) */
+      /* Slider Shells */
       --shellBg: rgba(0,0,0,.42);
       --shellBg2: rgba(0,0,0,.34);
       --shellBd: rgba(255,255,255,.10);
@@ -42,6 +42,19 @@
       overflow-x:hidden;
     }
 
+    /* ===== Mobile polish (ONLY mobile) ===== */
+    @media (max-width: 720px){
+      body{
+        font-size: 17px;
+        line-height: 1.5;
+        background:
+          radial-gradient(760px 520px at 22% -10%, rgba(124,92,255,.32), transparent 62%),
+          radial-gradient(720px 520px at 86% 6%, rgba(46,233,166,.20), transparent 64%),
+          radial-gradient(860px 520px at 60% 98%, rgba(255,209,102,.12), transparent 68%),
+          linear-gradient(180deg, #050711, #090f21);
+      }
+    }
+
     .grid{
       position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.26;
       background-image:
@@ -50,6 +63,10 @@
       background-size: 48px 48px;
       mask-image: radial-gradient(60% 55% at 50% 10%, rgba(0,0,0,1), transparent 70%);
     }
+    @media (max-width:720px){
+      .grid{ opacity:.18; background-size: 56px 56px; }
+    }
+
     .glow{
       position:fixed; inset:-260px; pointer-events:none; z-index:0;
       filter: blur(38px);
@@ -61,8 +78,14 @@
       transform: translate3d(0,0,0);
       will-change: transform;
     }
+    @media (max-width:720px){
+      .glow{ filter: blur(44px); opacity:.95; }
+    }
 
     .wrap{ width:min(1160px, calc(100% - 28px)); margin:0 auto; position:relative; z-index:1; }
+    @media (max-width:720px){
+      .wrap{ width:min(1160px, calc(100% - 20px)); }
+    }
 
     /* ===== Intro (one-time) ===== */
     .sigOverlay{
@@ -103,13 +126,29 @@
       padding: calc(env(safe-area-inset-top) + var(--s24)) 0 var(--s24);
       border-bottom: 1px solid rgba(255,255,255,.10);
     }
+    @media (max-width:720px){
+      .entry{ padding: calc(env(safe-area-inset-top) + 18px) 0 18px; }
+    }
+
     .kicker{
       display:flex; align-items:center; gap:10px;
       font-size: 12px; letter-spacing:.14em; text-transform: uppercase;
       color: var(--faint); margin:0 0 10px;
     }
+    @media (max-width:720px){
+      .kicker{ font-size: 12px; letter-spacing:.16em; }
+    }
+
     .title{ margin:0; font-size: var(--h1); letter-spacing:-.02em; line-height:1.06; }
+    @media (max-width:720px){
+      .title{ line-height:1.02; }
+    }
+
     .sub{ margin: var(--s8) 0 0; color: var(--muted); max-width: 78ch; font-size: 14px; }
+    @media (max-width:720px){
+      .sub{ font-size: 15px; }
+    }
+
     .snapRow{
       margin-top: var(--s16);
       display:flex; flex-wrap:wrap; gap:10px;
@@ -129,6 +168,10 @@
     }
     .chip:hover{ transform: translateY(-1px); background: rgba(255,255,255,.05); color: var(--text); border-color: rgba(124,92,255,.28); }
     .chip svg{ width:16px; height:16px; }
+    @media (max-width:720px){
+      .snapRow{ gap:8px; }
+      .chip{ font-size: 14px; padding: 11px 13px; }
+    }
 
     /* ===== Sticky tabs ===== */
     #tabsSpacer{ height:0; }
@@ -148,6 +191,10 @@
       z-index: 9999;
     }
     .tabsInner{ padding: var(--s12) 0 var(--s12); }
+    @media (max-width:720px){
+      .tabsInner{ padding: 12px 0 12px; }
+      .tabsWrap{ background: rgba(10,12,20,.82); }
+    }
 
     .tabs{
       position:relative;
@@ -159,8 +206,37 @@
       touch-action: pan-x;
       scroll-snap-type: x proximity;
       padding: 4px 0 6px;
+
+      /* mobile UX: prevent parent scroll chaining */
+      overscroll-behavior-x: contain;
     }
     .tabs::-webkit-scrollbar{ display:none; }
+
+    /* tiny edge fade hint on mobile */
+    .tabs:before,.tabs:after{
+      content:"";
+      position:sticky;
+      top:0;
+      width:18px;
+      height:44px;
+      flex:0 0 auto;
+      pointer-events:none;
+      z-index:3;
+      opacity:0;
+      transition: opacity 180ms ease;
+    }
+    .tabs:before{
+      left:0;
+      background: linear-gradient(90deg, rgba(10,12,20,.92), transparent);
+    }
+    .tabs:after{
+      right:0;
+      background: linear-gradient(270deg, rgba(10,12,20,.92), transparent);
+    }
+    @media (max-width:720px){
+      .tabs{ gap:10px; padding: 6px 0 8px; }
+      .tabs:before,.tabs:after{ opacity:1; height:48px; }
+    }
 
     .pill{
       position:absolute;
@@ -183,6 +259,9 @@
     }
     @media (prefers-reduced-motion: no-preference){
       .pill{ animation: pillPulse 2.8s ease-in-out infinite; }
+    }
+    @media (max-width:720px){
+      .pill{ height: 48px; }
     }
 
     .tab{
@@ -210,21 +289,36 @@
       border-color: rgba(124,92,255,.55);
       box-shadow: 0 0 0 3px rgba(124,92,255,.22);
     }
+    @media (max-width:720px){
+      .tab{ height:48px; font-size: 14px; padding: 0 16px; }
+      .tab svg{ width:18px; height:18px; }
+    }
 
     /* ===== Sections ===== */
     main{ padding: var(--s16) 0 var(--s72); }
     section[id]{ scroll-margin-top: calc(var(--tabsH) + env(safe-area-inset-top) + 12px); }
+    @media (max-width:720px){
+      main{ padding: 10px 0 64px; }
+      section[id]{ scroll-margin-top: calc(var(--tabsH) + env(safe-area-inset-top) + 10px); }
+    }
 
     .section{
       padding: var(--s40) 0;
       border-bottom: 1px solid rgba(255,255,255,.10);
     }
+    @media (max-width:720px){
+      .section{ padding: 28px 0; }
+    }
+
     .secHead{ display:flex; justify-content:space-between; gap: var(--s16); margin-bottom: var(--s16); }
     .secTitle{
       margin:0; font-size: var(--h2); letter-spacing:-.01em;
       display:flex; align-items:center; gap: 12px;
     }
     .secValue{ margin:6px 0 0; color: var(--muted); max-width: 72ch; font-size: 14px; }
+    @media (max-width:720px){
+      .secValue{ font-size: 15px; }
+    }
 
     .micro{
       margin-top: var(--s16);
@@ -256,6 +350,11 @@
       font-size: 12px;
     }
     .badge svg{ width:16px; height:16px; }
+    @media (max-width:720px){
+      .micro{ padding: 14px; }
+      .microDesc{ font-size: 14px; }
+      .badge{ font-size: 13px; padding: 8px 11px; }
+    }
 
     /* ===== Slider (3 slides) ===== */
     .slider{
@@ -282,7 +381,7 @@
       display:flex; align-items:center; gap:10px;
     }
 
-    /* ===== NEW: Controls Shell (wie Bild) ===== */
+    /* Controls Shell */
     .sliderControls{ display:flex; align-items:center; gap:10px; }
     .controlsShell{
       display:inline-flex;
@@ -295,6 +394,11 @@
       box-shadow: var(--shellGlow);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+    }
+    @media (max-width:720px){
+      .sliderTop{ flex-wrap:wrap; padding: 12px 12px 12px; }
+      .sliderControls{ width:100%; justify-content:flex-end; }
+      .controlsShell{ width:100%; justify-content:space-between; padding: 10px 10px; }
     }
 
     .ctrlBtn{
@@ -385,8 +489,12 @@
       scroll-snap-type: x mandatory;
       padding: 12px;
       touch-action: pan-x;
+      overscroll-behavior-x: contain;
     }
     .rail::-webkit-scrollbar{ display:none; }
+    @media (max-width:720px){
+      .rail{ padding: 12px 12px; gap:12px; }
+    }
 
     .card{
       flex:0 0 auto;
@@ -402,6 +510,10 @@
       transform: translateZ(0);
       transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
     }
+    @media (max-width:720px){
+      .card{ width: 92vw; padding: 14px; }
+    }
+
     .card:before{
       content:"";
       position:absolute;
@@ -448,6 +560,11 @@
     .ico svg{ width:22px; height:22px; }
     .cardTitle{ margin:0; font-weight: 780; letter-spacing:-.01em; line-height: 1.15; }
     .cardDesc{ margin:6px 0 0; color: var(--muted); font-size: 13px; max-width: 70ch; }
+    @media (max-width:720px){
+      .ico{ width:46px; height:46px; }
+      .cardTitle{ font-size: 16px; }
+      .cardDesc{ font-size: 14px; }
+    }
 
     .tags{ display:flex; flex-wrap:wrap; gap:8px; margin-top: var(--s12); }
     .tag{
@@ -459,8 +576,11 @@
       color: var(--muted);
       white-space:nowrap;
     }
+    @media (max-width:720px){
+      .tag{ font-size: 13px; padding: 7px 11px; }
+    }
 
-    /* ===== NEW: Pagination Shell (Container) ===== */
+    /* Pagination Shell */
     .striches{
       padding: 0 12px 14px;
       display:flex;
@@ -626,8 +746,6 @@
 
   <main>
     <div class="wrap" id="sectionsRoot"></div>
-    
-      
   </main>
 
   <script>
@@ -943,56 +1061,89 @@
 
       requestAnimationFrame(()=> movePill(getBtn(activeId)));
 
+      /* ===== Mobile fix: drag-to-scroll for tabs (makes horizontal scroll feel "app-like") ===== */
+      (() => {
+        let down=false, startX=0, startLeft=0, moved=false;
+        const isFinePointer = matchMedia('(pointer:fine)').matches;
+
+        function onDown(e){
+          if(e.button != null && e.button !== 0) return;
+          down = true; moved=false;
+          startX = e.clientX;
+          startLeft = tabs.scrollLeft;
+          tabs.setPointerCapture?.(e.pointerId);
+          if(!isFinePointer) pauseAutoTabs?.(2200);
+        }
+        function onMove(e){
+          if(!down) return;
+          const dx = e.clientX - startX;
+          if(Math.abs(dx) > 4) moved=true;
+          tabs.scrollLeft = startLeft - dx;
+          lastUserTabsScrollAt = performance.now();
+          movePill(getBtn(activeId));
+        }
+        function onUp(){
+          down=false;
+        }
+
+        tabs.addEventListener('pointerdown', onDown, { passive:true });
+        tabs.addEventListener('pointermove', onMove, { passive:true });
+        tabs.addEventListener('pointerup', onUp, { passive:true });
+        tabs.addEventListener('pointercancel', onUp, { passive:true });
+
+        // prevent accidental click when the user dragged
+        tabs.addEventListener('click', (e)=>{
+          if(moved){
+            e.preventDefault();
+            e.stopPropagation();
+            moved=false;
+          }
+        }, true);
+      })();
+
       let autoTabsTick = false;
 
-tabs.addEventListener('scroll', ()=>{
-  // Nur echte User-Scrolls zählen (Auto-Loop nicht)
-  if(!autoTabsTick) lastUserTabsScrollAt = performance.now();
-  movePill(getBtn(activeId));
-}, { passive:true });
+      tabs.addEventListener('scroll', ()=>{
+        if(!autoTabsTick) lastUserTabsScrollAt = performance.now();
+        movePill(getBtn(activeId));
+      }, { passive:true });
 
-// ===== Auto-Loop für Tabs (Marquee-Style) =====
-let autoTabsMode = !prefersReduced;   // bei reduced motion automatisch aus
-let autoTabsPausedUntil = 0;
+      // ===== Auto-Loop für Tabs (Desktop only; mobile off to avoid fighting touch) =====
+      const isDesktopLoop = matchMedia('(min-width: 820px)').matches;
+      let autoTabsMode = !prefersReduced && isDesktopLoop;
+      let autoTabsPausedUntil = 0;
 
-// Richtung: -1 wirkt wie "links -> rechts" (Tabs wandern sichtbar nach rechts rein)
-let autoTabsDir = -1;
+      let autoTabsDir = -1;
+      let autoTabsSpeed = 0.35;
 
-// Speed (px pro Frame) – kleiner = smoother
-let autoTabsSpeed = 0.35;
+      function pauseAutoTabs(ms=1400){
+        autoTabsPausedUntil = performance.now() + ms;
+      }
 
-function pauseAutoTabs(ms=1400){
-  autoTabsPausedUntil = performance.now() + ms;
-}
+      ['pointerdown','wheel','touchstart','focusin','mouseenter'].forEach(evt=>{
+        tabs.addEventListener(evt, ()=>pauseAutoTabs(1800), { passive:true });
+      });
+      tabs.addEventListener('mouseleave', ()=>pauseAutoTabs(500), { passive:true });
 
-// Pause bei User-Interaktion
-['pointerdown','wheel','touchstart','focusin','mouseenter'].forEach(evt=>{
-  tabs.addEventListener(evt, ()=>pauseAutoTabs(1800), { passive:true });
-});
-tabs.addEventListener('mouseleave', ()=>pauseAutoTabs(500), { passive:true });
+      function autoTabsLoop(){
+        requestAnimationFrame(autoTabsLoop);
+        if(!autoTabsMode) return;
+        if(document.hidden) return;
+        if(performance.now() < autoTabsPausedUntil) return;
 
-function autoTabsLoop(){
-  requestAnimationFrame(autoTabsLoop);
-  if(!autoTabsMode) return;
-  if(document.hidden) return;
-  if(performance.now() < autoTabsPausedUntil) return;
+        const max = tabs.scrollWidth - tabs.clientWidth;
+        if(max <= 0) return;
 
-  const max = tabs.scrollWidth - tabs.clientWidth;
-  if(max <= 0) return;
+        autoTabsTick = true;
+        let next = tabs.scrollLeft + (autoTabsDir * autoTabsSpeed);
 
-  autoTabsTick = true;
-  let next = tabs.scrollLeft + (autoTabsDir * autoTabsSpeed);
+        if(next < 0) next = max;
+        if(next > max) next = 0;
 
-  // Loop ohne hängen zu bleiben
-  if(next < 0) next = max;
-  if(next > max) next = 0;
-
-  tabs.scrollLeft = next;
-  autoTabsTick = false;
-}
-autoTabsLoop();
-
-
+        tabs.scrollLeft = next;
+        autoTabsTick = false;
+      }
+      autoTabsLoop();
 
       tabBtns.forEach(btn=>{
         btn.addEventListener('click', ()=>{
@@ -1059,7 +1210,7 @@ autoTabsLoop();
         });
       }, { passive:true });
 
-      /* ===== Slider3 (prev/next + play/pause + progress + active card bite) ===== */
+      /* ===== Slider3 ===== */
       function setupSlider3(slider){
         const rail = slider.querySelector('.rail');
         const btns = Array.from(slider.querySelectorAll('.strichBtn'));
@@ -1127,13 +1278,11 @@ autoTabsLoop();
           }
         }
 
-        // Click pagination / arrows / play
         btns.forEach((b, i)=> b.addEventListener('click', ()=> scrollToIndex(i)));
         prevBtn.addEventListener('click', ()=> scrollToIndex(index - 1));
         nextBtn.addEventListener('click', ()=> scrollToIndex(index + 1));
         playBtn.addEventListener('click', ()=> setPlaying(!playing));
 
-        // derive active slide by nearest card
         function updateIndexFromScroll(){
           const mid = rail.scrollLeft + (rail.clientWidth * 0.50);
           let best = 0, bestDist = Infinity;
@@ -1164,7 +1313,6 @@ autoTabsLoop();
 
         new ResizeObserver(updateIndexFromScroll).observe(rail);
 
-        // pause when out of view (keeps state)
         const viewIO = new IntersectionObserver((entries)=>{
           for(const e of entries){
             if(e.target !== slider) continue;
@@ -1174,7 +1322,6 @@ autoTabsLoop();
         }, { threshold: 0.25 });
         viewIO.observe(slider);
 
-        // pause on tab hidden
         document.addEventListener('visibilitychange', ()=>{
           if(document.hidden){
             clearInterval(timer); timer=null;
@@ -1184,7 +1331,6 @@ autoTabsLoop();
           }
         });
 
-        // init
         updateIndexFromScroll();
         setPlaying(playing);
       }
