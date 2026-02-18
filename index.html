@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>UNYD Skills — Sticky Tabs + Slider</title>
+  <title>UNYD Skills — Sticky Tabs + Scroll Snap</title>
 
   <style>
     :root{
@@ -26,14 +26,17 @@
 
       --tabsH: 76px;
 
-      /* ✅ FIXED ICON SIZES */
+      /* icons */
       --tabIconSize: 50px;
       --secIconSize: 130px;
 
-      /* Slider */
+      /* horizontal scroll cards (deliveroo/lieferando style) */
       --slideW: 560px;
       --slideH: 330px;
       --sliderGap: 14px;
+
+      /* spacing */
+      --wrapW: 1160px;
     }
 
     *{ box-sizing:border-box; }
@@ -69,7 +72,7 @@
     }
 
     .wrap{
-      width:min(1160px, calc(100% - 28px));
+      width:min(var(--wrapW), calc(100% - 28px));
       margin:0 auto;
       position:relative;
       z-index:1;
@@ -180,7 +183,7 @@
       z-index:1;
       flex:0 0 auto;
       height:44px;
-      padding: 0 14px;
+      padding: 0 14px 0 12px;
       border-radius: 999px;
       border: 1px solid transparent;
       background: transparent;
@@ -215,13 +218,36 @@
       filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
     }
 
+    .tabLabel{
+      display:flex;
+      flex-direction:column;
+      line-height:1.05;
+      gap:2px;
+      min-width:0;
+    }
+    .tabName{
+      font-weight:800;
+      letter-spacing:-.01em;
+      color: var(--text);
+      font-size: 13px;
+    }
+    .tabMini{
+      font-size: 11px;
+      color: var(--faint);
+      letter-spacing:.02em;
+      max-width: 18ch;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
     /* sections */
     main{ padding: 16px 0 72px; }
     section[id]{
       scroll-margin-top: calc(var(--tabsH) + env(safe-area-inset-top) + 12px);
     }
     .section{
-      padding: 50px 0;
+      padding: 46px 0;
       border-bottom: 1px solid rgba(255,255,255,.10);
     }
 
@@ -256,7 +282,30 @@
       font-size: 14px;
     }
 
-    /* slider */
+    .secMetaRow{
+      margin-top: 12px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .secMetaPill{
+      display:inline-flex;
+      align-items:center;
+      padding: 8px 12px;
+      border-radius: var(--r999);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      letter-spacing:.01em;
+    }
+    .secMetaInfo{
+      color: var(--faint);
+      font-size: 12px;
+    }
+
+    /* horizontal scroll ("lieferando style") */
     .slider{ margin-top: 18px; position: relative; }
 
     .sliderViewport{
@@ -266,9 +315,30 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width:none;
-      padding: 6px 2px 10px;
+      padding: 6px 2px 12px;
+      scroll-padding-left: 6px;
+      scroll-padding-right: 6px;
     }
     .sliderViewport::-webkit-scrollbar{ display:none; }
+
+    /* nice edge fade */
+    .slider::before,.slider::after{
+      content:"";
+      position:absolute;
+      top:0; bottom:0;
+      width: 38px;
+      pointer-events:none;
+      z-index:4;
+      opacity:.9;
+    }
+    .slider::before{
+      left:-2px;
+      background: linear-gradient(90deg, rgba(6,8,18,1), rgba(6,8,18,0));
+    }
+    .slider::after{
+      right:-2px;
+      background: linear-gradient(270deg, rgba(6,8,18,1), rgba(6,8,18,0));
+    }
 
     .slide{
       flex: 0 0 auto;
@@ -348,13 +418,13 @@
     }
 
     /* pagination */
-    .sliderControls{ margin-top: 14px; display:flex; justify-content:center; }
+    .sliderControls{ margin-top: 12px; display:flex; justify-content:center; }
     .pagiBox{
       display:flex;
       align-items:center;
       justify-content:center;
       gap:16px;
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-radius: 999px;
       background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.10);
@@ -487,15 +557,50 @@
       color: rgba(255,255,255,.78);
       font-size: 12px;
     }
+
+    /* ===== MOBILE PERFECT ===== */
+    @media (max-width: 900px){
+      :root{
+        --tabIconSize: 44px;
+        --secIconSize: 92px;
+        --slideH: 220px;
+        --sliderGap: 12px;
+      }
+
+      .wrap{ width: calc(100% - 20px); }
+
+      .tabsInner{ padding: 10px 0; }
+      .pill{ height: 42px; }
+      .tab{ height: 42px; padding: 0 12px 0 10px; }
+      .tabName{ font-size: 12px; }
+      .tabMini{ font-size: 10px; max-width: 14ch; }
+
+      .secDesc{ font-size: 13px; }
+
+      /* scroll like apps: big swipe cards */
+      .slide{
+        width: 88vw;
+        border-radius: 22px;
+      }
+      .slideMedia{ border-radius: 22px; }
+      .slideBody{ padding: 12px 12px 14px; }
+      .slideTitle{ font-size: 15px; }
+      .slideText{ font-size: 12px; }
+
+      .pagiBox{ gap: 12px; padding: 10px 14px; }
+      .pagiBar.is-active{ width: 64px; height: 12px; }
+      .pagiBar.is-active::before{ width: 20px; height: 20px; }
+
+      /* reduce edge fades a bit */
+      .slider::before,.slider::after{ width: 26px; opacity:.85; }
+    }
   </style>
 </head>
 
 <body>
-  <!-- Background -->
   <div class="grid" aria-hidden="true"></div>
   <div class="glow" aria-hidden="true"></div>
 
-  <!-- Header -->
   <header class="entry">
     <div class="wrap">
       <div class="kicker">
@@ -519,19 +624,16 @@
     </div>
   </header>
 
-  <!-- Sticky Tabs -->
   <div id="tabsSpacer" aria-hidden="true"></div>
 
   <div class="tabsWrap" id="tabsWrap">
     <div class="wrap tabsInner">
       <nav class="tabs" id="tabs" role="tablist" aria-label="Sektionen">
         <span class="pill" id="pill" aria-hidden="true"></span>
-        <!-- Tabs injected by JS -->
       </nav>
     </div>
   </div>
 
-  <!-- Content -->
   <main>
     <div class="wrap" id="sectionsRoot"></div>
 
@@ -591,24 +693,30 @@
         {
           id: 'sec-plugins',
           tab: 'WP Plugins',
+          mini: 'Core & Admin',
           icon: ICONS.plugins,
           title: 'WordPress Plugin-Entwicklung',
           desc: 'UNYD Core: Guard, Tokens, Discover/Cache, Admin UI – stabil, clean, wartbar.',
+          metaPills: ['Modular', 'Wartbar', 'Monitoring'],
+          metaInfo: 'Swipe durch Screens, Tap öffnet Vollansicht.',
           slides: [
-            { img: WP_PLUGIN_IMAGES.login,    title:'Login UI + Redirect Guard',  text:'Login-Flow ohne Redirect-Loops' },
-            { img: WP_PLUGIN_IMAGES.token,    title:'Token System',              text:'Token-basiertes Usage-System' },
-            { img: WP_PLUGIN_IMAGES.imgmode,  title:'Commons Image Mode',        text:'Zuverlässige Image-Strategie mit Fallbacks' },
-            { img: WP_PLUGIN_IMAGES.discover, title:'Discover Engine',           text:'Geo-Content mit Fallbacks' },
-            { img: WP_PLUGIN_IMAGES.cache,    title:'Cache + Lock + TTL',        text:'Cache + Locking für externe APIs' },
-            { img: WP_PLUGIN_IMAGES.admin,    title:'Admin Center + Monitoring', text:'API- & Cache-Monitoring' },
+            { img: WP_PLUGIN_IMAGES.login,    title:'Login UI + Redirect Guard',  text:'Login-Flow ohne Redirect-Loops.' },
+            { img: WP_PLUGIN_IMAGES.token,    title:'Token System',              text:'Token-basiertes Usage-System.' },
+            { img: WP_PLUGIN_IMAGES.imgmode,  title:'Commons Image Mode',        text:'Zuverlässige Image-Strategie mit Fallbacks.' },
+            { img: WP_PLUGIN_IMAGES.discover, title:'Discover Engine',           text:'Geo-Content mit Fallbacks.' },
+            { img: WP_PLUGIN_IMAGES.cache,    title:'Cache + Lock + TTL',        text:'Cache + Locking für externe APIs.' },
+            { img: WP_PLUGIN_IMAGES.admin,    title:'Admin Center + Monitoring', text:'API- & Cache-Monitoring.' },
           ],
         },
         {
           id: 'sec-rest',
           tab: 'REST & Data',
+          mini: 'Contracts',
           icon: ICONS.rest,
           title: 'REST & Data Flows',
           desc: 'Predictable responses, stabile Contracts, keine Überraschungen in der UI.',
+          metaPills: ['Schema', 'Auth', 'Caching'],
+          metaInfo: 'Stabile Schnittstellen = stabile Frontends.',
           slides: [
             { img: placeholderImg('rest-schema'), title:'Schema + Validation', text:'Inputs/Outputs klar definieren → weniger Bugs, bessere Clients.' },
             { img: placeholderImg('rest-auth'),   title:'Auth + Permissions',  text:'Caps, Nonces, Permission Callbacks – sicher ohne UX zu killen.' },
@@ -618,9 +726,12 @@
         {
           id: 'sec-pulse',
           tab: 'PULSE',
+          mini: 'Live States',
           icon: ICONS.pulse,
           title: 'PULSE / Live UI',
           desc: 'Echtzeit-States, Progress, retries – ohne Flackern oder Fake-Loading.',
+          metaPills: ['State', 'Retry', 'Fail-Safe'],
+          metaInfo: 'UI folgt echten Zuständen.',
           slides: [
             { img: placeholderImg('pulse-state'), title:'State Machine UI', text:'idle → loading → sync → error – klar statt random.' },
             { img: placeholderImg('pulse-retry'), title:'Retry + Backoff',  text:'Fehler sichtbar, recoverbar – keine Dead Ends.' },
@@ -630,9 +741,12 @@
         {
           id: 'sec-ai',
           tab: 'AI Dev',
+          mini: 'Guardrails',
           icon: ICONS.ai,
           title: 'AI Code Development',
           desc: 'Guardrails, Quotas, stabile Outputs – AI als Feature, nicht als Glücksspiel.',
+          metaPills: ['Validation', 'Safety', 'Quota'],
+          metaInfo: 'Stabil statt Zufall.',
           slides: [
             { img: placeholderImg('ai-constraints'), title:'Constraints + Validation', text:'Outputs prüfen, strukturieren, fallback deterministisch.' },
             { img: placeholderImg('ai-safety'),      title:'Safety Layer',            text:'Rules, Filter, safe modes – ohne UX zu killen.' },
@@ -642,9 +756,12 @@
         {
           id: 'sec-perf',
           tab: 'Performance',
+          mini: 'Lean UI',
           icon: ICONS.perf,
           title: 'Performance',
           desc: 'Lean & smooth. Kein Framework-Ballast nur für Scrollspy & Slider.',
+          metaPills: ['rAF', 'GPU-safe', 'A11y'],
+          metaInfo: 'Smooth ohne CPU-Spikes.',
           slides: [
             { img: placeholderImg('perf-raf'),  title:'Cheap Scroll',     text:'rAF throttle + stabile Schwelle – keine CPU spikes.' },
             { img: placeholderImg('perf-gpu'),  title:'GPU safe Motion',  text:'Transform/opacity only – kein Layout trashing.' },
@@ -654,11 +771,14 @@
         {
           id: 'sec-uiux',
           tab: 'UI / UX',
+          mini: 'Hierarchy',
           icon: ICONS.uiux,
           title: 'UI / UX',
           desc: 'Hierarchie, Feedback, Motion – modern, app-like, aber nicht nervig.',
+          metaPills: ['Feedback', 'A11y', 'Motion'],
+          metaInfo: 'Klar, ruhig, präzise.',
           slides: [
-            { img: placeholderImg('ui-tabs'),  title:'Scroll-Synced Tabs', text:'Navigation folgt Content – keine CTA-Show, nur Struktur.' },
+            { img: placeholderImg('ui-tabs'),  title:'Scroll-Synced Tabs', text:'Navigation folgt Content – nur Struktur.' },
             { img: placeholderImg('ui-a11y'),  title:'A11y',               text:'Focus visible, reduced motion – sauber.' },
             { img: placeholderImg('ui-micro'), title:'Micro Feedback',     text:'Hover/tap states – clean & premium.' },
           ],
@@ -666,9 +786,12 @@
         {
           id: 'sec-stack',
           tab: 'Stack',
+          mini: 'Tools',
           icon: ICONS.stack,
           title: 'Tools & Stack',
-          desc: 'WP · PHP · REST · JS · CSS – mit System, nicht nur “kann ich”.',
+          desc: 'WP · PHP · REST · JS · CSS – mit System, nicht nur „kann ich“.',
+          metaPills: ['WP Internals', 'Contracts', 'Frontend'],
+          metaInfo: 'Solide Basis, kein Buzzword.',
           slides: [
             { img: placeholderImg('stack-wp'),       title:'WordPress Internals', text:'Hooks, CPT, Meta, Admin Screens, Upgrade Paths.' },
             { img: placeholderImg('stack-rest'),     title:'REST Contracts',      text:'Schema, auth, cache – stabile Clients.' },
@@ -691,7 +814,10 @@
 
         btn.innerHTML = `
           <img class="tabMascot" src="${d.icon}" alt="" loading="lazy">
-          <span>${d.tab}</span>
+          <span class="tabLabel">
+            <span class="tabName">${d.tab}</span>
+            <span class="tabMini">${d.mini || ''}</span>
+          </span>
         `;
         tabsFrag.appendChild(btn);
 
@@ -715,12 +841,21 @@
           </article>
         `).join('');
 
+        const pills = (d.metaPills || []).map(p =>
+          `<span class="secMetaPill">${p}</span>`
+        ).join('');
+
         sec.innerHTML = `
           <div class="secTitleRow">
             <img class="secIcon" src="${d.icon}" alt="" loading="lazy">
             <div class="secHeadText">
               <h2 class="secTitle">${d.title}</h2>
               <p class="secDesc">${d.desc}</p>
+
+              <div class="secMetaRow">
+                ${pills}
+                <span class="secMetaInfo">${d.metaInfo || ''}</span>
+              </div>
             </div>
           </div>
 
@@ -748,6 +883,8 @@
       const tabBtns  = Array.from(tabs.querySelectorAll('.tab'));
       const sections = tabBtns.map(b => document.getElementById(b.dataset.target)).filter(Boolean);
 
+      const isMobileNow = () => matchMedia('(max-width: 900px)').matches;
+
       function movePill(btn){
         if (!btn) return;
         const listRect = tabs.getBoundingClientRect();
@@ -770,6 +907,12 @@
       }
 
       function applyFixed(){
+        // ✅ Mobile: no JS fixed. Sticky only (more stable on iOS/Android).
+        if (isMobileNow()){
+          tabsWrap.classList.remove('is-fixed');
+          tabsSpacer.style.height = '0px';
+          return;
+        }
         const h = measureTabsH();
         const shouldFix = window.scrollY >= tabsTopY;
         if (shouldFix){
@@ -990,7 +1133,6 @@
 
         leftBtn?.addEventListener('click', () => snapTo(activeIndex - 1));
         rightBtn?.addEventListener('click', () => snapTo(activeIndex + 1));
-
         bars.forEach((bar, i) => bar.addEventListener('click', () => snapTo(i)));
 
         viewport.addEventListener('scroll', () => {
