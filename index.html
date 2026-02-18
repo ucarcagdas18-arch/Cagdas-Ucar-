@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>UNYD Skills — Sticky Tabs + Scroll Snap</title>
+  <title>UNYD Skills — Sticky Tabs</title>
 
   <style>
     :root{
@@ -29,14 +29,6 @@
       /* icons */
       --tabIconSize: 50px;
       --secIconSize: 130px;
-
-      /* horizontal scroll cards (deliveroo/lieferando style) */
-      --slideW: 560px;
-      --slideH: 330px;
-      --sliderGap: 14px;
-
-      /* spacing */
-      --wrapW: 1160px;
     }
 
     *{ box-sizing:border-box; }
@@ -72,7 +64,7 @@
     }
 
     .wrap{
-      width:min(var(--wrapW), calc(100% - 28px));
+      width:min(1160px, calc(100% - 28px));
       margin:0 auto;
       position:relative;
       z-index:1;
@@ -183,7 +175,7 @@
       z-index:1;
       flex:0 0 auto;
       height:44px;
-      padding: 0 14px 0 12px;
+      padding: 0 14px;
       border-radius: 999px;
       border: 1px solid transparent;
       background: transparent;
@@ -218,36 +210,13 @@
       filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
     }
 
-    .tabLabel{
-      display:flex;
-      flex-direction:column;
-      line-height:1.05;
-      gap:2px;
-      min-width:0;
-    }
-    .tabName{
-      font-weight:800;
-      letter-spacing:-.01em;
-      color: var(--text);
-      font-size: 13px;
-    }
-    .tabMini{
-      font-size: 11px;
-      color: var(--faint);
-      letter-spacing:.02em;
-      max-width: 18ch;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-
     /* sections */
     main{ padding: 16px 0 72px; }
     section[id]{
       scroll-margin-top: calc(var(--tabsH) + env(safe-area-inset-top) + 12px);
     }
     .section{
-      padding: 46px 0;
+      padding: 50px 0;
       border-bottom: 1px solid rgba(255,255,255,.10);
     }
 
@@ -282,188 +251,22 @@
       font-size: 14px;
     }
 
-    .secMetaRow{
-      margin-top: 12px;
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .secMetaPill{
-      display:inline-flex;
-      align-items:center;
-      padding: 8px 12px;
-      border-radius: var(--r999);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: rgba(255,255,255,.78);
-      font-size: 12px;
-      letter-spacing:.01em;
-    }
-    .secMetaInfo{
-      color: var(--faint);
-      font-size: 12px;
-    }
-
-    /* horizontal scroll ("lieferando style") */
-    .slider{ margin-top: 18px; position: relative; }
-
-    .sliderViewport{
-      display:flex;
-      gap: var(--sliderGap);
-      overflow-x:auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width:none;
-      padding: 6px 2px 12px;
-      scroll-padding-left: 6px;
-      scroll-padding-right: 6px;
-    }
-    .sliderViewport::-webkit-scrollbar{ display:none; }
-
-    /* nice edge fade */
-    .slider::before,.slider::after{
-      content:"";
-      position:absolute;
-      top:0; bottom:0;
-      width: 38px;
-      pointer-events:none;
-      z-index:4;
-      opacity:.9;
-    }
-    .slider::before{
-      left:-2px;
-      background: linear-gradient(90deg, rgba(6,8,18,1), rgba(6,8,18,0));
-    }
-    .slider::after{
-      right:-2px;
-      background: linear-gradient(270deg, rgba(6,8,18,1), rgba(6,8,18,0));
-    }
-
-    .slide{
-      flex: 0 0 auto;
-      width: min(var(--slideW), 86vw);
-      border-radius: 25px;
+    /* nice text block instead of slider */
+    .infoBox{
+      margin-top: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.03);
-      box-shadow: 0 12px 28px rgba(0,0,0,.18);
-      overflow: hidden;
-      scroll-snap-align: start;
-      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
-      cursor:pointer;
+      border-radius: 18px;
+      padding: 14px 16px;
+      box-shadow: 0 14px 34px rgba(0,0,0,.18);
     }
-    .slide:hover{
-      transform: translateY(-2px);
-      border-color: rgba(124,92,255,.35);
-      background: rgba(255,255,255,.045);
+    .infoBox p{
+      margin:0;
+      color: rgba(255,255,255,.78);
+      line-height: 1.6;
+      font-size: 14px;
     }
-
-    .slideMedia{
-      height: var(--slideH);
-      position: relative;
-      border-radius: 25px;
-      overflow: hidden;
-      background: rgba(0,0,0,.18);
-    }
-    .slideMedia img{
-      width:100%;
-      height:100%;
-      object-fit: contain;
-      display:block;
-      border-radius: 0;
-      background: transparent;
-    }
-
-    .slideBody{ padding: 14px 14px 16px; }
-    .slideTitle{ margin:0; font-weight: 900; letter-spacing:-.01em; }
-    .slideText{
-      margin: 8px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      max-width: 70ch;
-    }
-
-    /* arrows */
-    .sliderArrow{
-      position:absolute;
-      top: 50%;
-      transform: translateY(-58%);
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(10,12,20,.65);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: rgba(255,255,255,.92);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      z-index: 5;
-      box-shadow: 0 14px 30px rgba(0,0,0,.28);
-      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
-    }
-    .sliderArrow:hover{
-      transform: translateY(-58%) scale(1.04);
-      background: rgba(255,255,255,.06);
-      border-color: rgba(124,92,255,.35);
-    }
-    .sliderArrow:active{ transform: translateY(-58%) scale(.98); }
-    .sliderArrow.left{ left: -8px; }
-    .sliderArrow.right{ right: -8px; }
-
-    @media (hover:none){
-      .sliderArrow{ display:none; }
-    }
-
-    /* pagination */
-    .sliderControls{ margin-top: 12px; display:flex; justify-content:center; }
-    .pagiBox{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:16px;
-      padding: 12px 16px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 18px 40px rgba(0,0,0,.25);
-    }
-    .pagiBar{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.55);
-      opacity: .55;
-      cursor:pointer;
-      transition: transform 160ms ease, opacity 160ms ease, background 160ms ease, width 220ms ease;
-    }
-    .pagiBar:hover{ opacity: .85; transform: translateY(-1px); }
-    .pagiBar.is-active{
-      width: 78px;
-      height: 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.18);
-      opacity: 1;
-      position: relative;
-      transform: none;
-    }
-    .pagiBar.is-active::before{
-      content:"";
-      position:absolute;
-      left: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      background: rgba(124,92,255,1);
-      box-shadow: 0 10px 22px rgba(124,92,255,.35);
-      border: 1px solid rgba(255,255,255,.10);
-    }
+    .infoBox b{ color: rgba(255,255,255,.92); }
 
     /* footer */
     .footer{ padding: 56px 0 72px; }
@@ -490,109 +293,19 @@
     }
     .footItem b{ font-weight: 800; }
 
-    /* lightbox */
-    .lightbox{
-      position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 22px;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      cursor: pointer;
-    }
-    .lightbox.is-open{ display:flex; }
-
-    .lightboxInner{
-      width: min(1200px, 96vw);
-      height: min(82vh, 860px);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(10,12,20,.72);
-      box-shadow: 0 26px 70px rgba(0,0,0,.55);
-      overflow: hidden;
-      position: relative;
-      cursor: default;
-    }
-
-    .lightboxImg{
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      background: rgba(0,0,0,.35);
-      cursor: zoom-in;
-    }
-
-    .lightboxClose{
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 44px;
-      height: 44px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(10,12,20,.65);
-      color: rgba(255,255,255,.92);
-      cursor: pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 14px 30px rgba(0,0,0,.28);
-    }
-
-    .lightboxHint{
-      position:absolute;
-      left: 14px;
-      bottom: 12px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.78);
-      font-size: 12px;
-    }
-
     /* ===== MOBILE PERFECT ===== */
     @media (max-width: 900px){
       :root{
         --tabIconSize: 44px;
         --secIconSize: 92px;
-        --slideH: 220px;
-        --sliderGap: 12px;
       }
-
       .wrap{ width: calc(100% - 20px); }
-
       .tabsInner{ padding: 10px 0; }
       .pill{ height: 42px; }
-      .tab{ height: 42px; padding: 0 12px 0 10px; }
-      .tabName{ font-size: 12px; }
-      .tabMini{ font-size: 10px; max-width: 14ch; }
-
+      .tab{ height: 42px; font-size: 12px; padding: 0 12px; }
       .secDesc{ font-size: 13px; }
-
-      /* scroll like apps: big swipe cards */
-      .slide{
-        width: 88vw;
-        border-radius: 22px;
-      }
-      .slideMedia{ border-radius: 22px; }
-      .slideBody{ padding: 12px 12px 14px; }
-      .slideTitle{ font-size: 15px; }
-      .slideText{ font-size: 12px; }
-
-      .pagiBox{ gap: 12px; padding: 10px 14px; }
-      .pagiBar.is-active{ width: 64px; height: 12px; }
-      .pagiBar.is-active::before{ width: 20px; height: 20px; }
-
-      /* reduce edge fades a bit */
-      .slider::before,.slider::after{ width: 26px; opacity:.85; }
+      .infoBox{ padding: 12px 14px; }
+      .infoBox p{ font-size: 13px; }
     }
   </style>
 </head>
@@ -677,126 +390,62 @@
         stack:   "https://i.ibb.co/jvv11rVM/Stack.png",
       };
 
-      const WP_PLUGIN_IMAGES = {
-        login:   "https://i.ibb.co/9krsNqxM/Bildschirmfoto-2026-01-18-um-13-00-58.png",
-        token:   "https://i.ibb.co/ZvVJdPt/Token.png",
-        imgmode: "https://i.ibb.co/BHYt5Shg/36-DE460-B-283-A-4034-960-B-A9-C5-A8146-C39.png",
-        discover:"https://i.ibb.co/wZNmh5xG/A29-BE0-E7-B4-CF-4-DD2-BB1-B-9-C1-E88930840.png",
-        cache:   "https://i.ibb.co/r2syRBDH/TTL-2.png",
-        admin:   "https://i.ibb.co/QjMmT2LZ/Bildschirmfoto-2026-01-18-um-14-11-43.png",
-      };
-
-      const placeholderImg = (seed) =>
-        `https://picsum.photos/seed/${encodeURIComponent(seed)}/1200/700`;
-
       const DATA = [
         {
           id: 'sec-plugins',
           tab: 'WP Plugins',
-          mini: 'Core & Admin',
           icon: ICONS.plugins,
           title: 'WordPress Plugin-Entwicklung',
           desc: 'UNYD Core: Guard, Tokens, Discover/Cache, Admin UI – stabil, clean, wartbar.',
-          metaPills: ['Modular', 'Wartbar', 'Monitoring'],
-          metaInfo: 'Swipe durch Screens, Tap öffnet Vollansicht.',
-          slides: [
-            { img: WP_PLUGIN_IMAGES.login,    title:'Login UI + Redirect Guard',  text:'Login-Flow ohne Redirect-Loops.' },
-            { img: WP_PLUGIN_IMAGES.token,    title:'Token System',              text:'Token-basiertes Usage-System.' },
-            { img: WP_PLUGIN_IMAGES.imgmode,  title:'Commons Image Mode',        text:'Zuverlässige Image-Strategie mit Fallbacks.' },
-            { img: WP_PLUGIN_IMAGES.discover, title:'Discover Engine',           text:'Geo-Content mit Fallbacks.' },
-            { img: WP_PLUGIN_IMAGES.cache,    title:'Cache + Lock + TTL',        text:'Cache + Locking für externe APIs.' },
-            { img: WP_PLUGIN_IMAGES.admin,    title:'Admin Center + Monitoring', text:'API- & Cache-Monitoring.' },
-          ],
+          info: 'Ich bündele zentrale Funktionen in einem Plugin, damit <b>Wartbarkeit</b> und <b>Übersicht</b> erhalten bleiben – statt Plugin-Chaos.'
         },
         {
           id: 'sec-rest',
           tab: 'REST & Data',
-          mini: 'Contracts',
           icon: ICONS.rest,
           title: 'REST & Data Flows',
           desc: 'Predictable responses, stabile Contracts, keine Überraschungen in der UI.',
-          metaPills: ['Schema', 'Auth', 'Caching'],
-          metaInfo: 'Stabile Schnittstellen = stabile Frontends.',
-          slides: [
-            { img: placeholderImg('rest-schema'), title:'Schema + Validation', text:'Inputs/Outputs klar definieren → weniger Bugs, bessere Clients.' },
-            { img: placeholderImg('rest-auth'),   title:'Auth + Permissions',  text:'Caps, Nonces, Permission Callbacks – sicher ohne UX zu killen.' },
-            { img: placeholderImg('rest-cache'),  title:'Caching + Rate Limits', text:'DB schützen, UX stabil halten – Backoff + retries.' },
-          ],
+          info: 'Ich setze REST-Endpunkte so um, dass Clients <b>verlässliche Contracts</b> haben. Inputs/Outputs sind klar, Fehlerfälle sind planbar.'
         },
         {
           id: 'sec-pulse',
           tab: 'PULSE',
-          mini: 'Live States',
           icon: ICONS.pulse,
           title: 'PULSE / Live UI',
           desc: 'Echtzeit-States, Progress, retries – ohne Flackern oder Fake-Loading.',
-          metaPills: ['State', 'Retry', 'Fail-Safe'],
-          metaInfo: 'UI folgt echten Zuständen.',
-          slides: [
-            { img: placeholderImg('pulse-state'), title:'State Machine UI', text:'idle → loading → sync → error – klar statt random.' },
-            { img: placeholderImg('pulse-retry'), title:'Retry + Backoff',  text:'Fehler sichtbar, recoverbar – keine Dead Ends.' },
-            { img: placeholderImg('pulse-safe'),  title:'Safe Failure Modes', text:'Timeouts, fallbacks, logs – Kontrolle behalten.' },
-          ],
+          info: 'Live-UI bedeutet für mich: echte Zustände, sauberes Feedback, klare Recovery-Pfade – <b>keine</b> zufälligen Loading-Spikes.'
         },
         {
           id: 'sec-ai',
           tab: 'AI Dev',
-          mini: 'Guardrails',
           icon: ICONS.ai,
           title: 'AI Code Development',
           desc: 'Guardrails, Quotas, stabile Outputs – AI als Feature, nicht als Glücksspiel.',
-          metaPills: ['Validation', 'Safety', 'Quota'],
-          metaInfo: 'Stabil statt Zufall.',
-          slides: [
-            { img: placeholderImg('ai-constraints'), title:'Constraints + Validation', text:'Outputs prüfen, strukturieren, fallback deterministisch.' },
-            { img: placeholderImg('ai-safety'),      title:'Safety Layer',            text:'Rules, Filter, safe modes – ohne UX zu killen.' },
-            { img: placeholderImg('ai-quota'),       title:'Quota Control',           text:'Caching + limits + logs – Kosten transparent.' },
-          ],
+          info: 'AI Features baue ich mit Guardrails: Outputs werden validiert, Quoten kontrolliert und Fallbacks bleiben deterministisch.'
         },
         {
           id: 'sec-perf',
           tab: 'Performance',
-          mini: 'Lean UI',
           icon: ICONS.perf,
           title: 'Performance',
-          desc: 'Lean & smooth. Kein Framework-Ballast nur für Scrollspy & Slider.',
-          metaPills: ['rAF', 'GPU-safe', 'A11y'],
-          metaInfo: 'Smooth ohne CPU-Spikes.',
-          slides: [
-            { img: placeholderImg('perf-raf'),  title:'Cheap Scroll',     text:'rAF throttle + stabile Schwelle – keine CPU spikes.' },
-            { img: placeholderImg('perf-gpu'),  title:'GPU safe Motion',  text:'Transform/opacity only – kein Layout trashing.' },
-            { img: placeholderImg('perf-a11y'), title:'Reduced Motion',   text:'Respect user settings – clean.' },
-          ],
+          desc: 'Lean & smooth. Kein Framework-Ballast nur für Scrollspy & Tabs.',
+          info: 'Performance ist nicht optional: weniger Overhead, stabile Scroll-Logik, saubere Renderpfade – damit es auch auf Mobile smooth bleibt.'
         },
         {
           id: 'sec-uiux',
           tab: 'UI / UX',
-          mini: 'Hierarchy',
           icon: ICONS.uiux,
           title: 'UI / UX',
           desc: 'Hierarchie, Feedback, Motion – modern, app-like, aber nicht nervig.',
-          metaPills: ['Feedback', 'A11y', 'Motion'],
-          metaInfo: 'Klar, ruhig, präzise.',
-          slides: [
-            { img: placeholderImg('ui-tabs'),  title:'Scroll-Synced Tabs', text:'Navigation folgt Content – nur Struktur.' },
-            { img: placeholderImg('ui-a11y'),  title:'A11y',               text:'Focus visible, reduced motion – sauber.' },
-            { img: placeholderImg('ui-micro'), title:'Micro Feedback',     text:'Hover/tap states – clean & premium.' },
-          ],
+          info: 'Ich optimiere Nutzerführung über Hierarchie, Micro-Feedback und klare Struktur – damit Nutzer ohne Reibung ans Ziel kommen.'
         },
         {
           id: 'sec-stack',
           tab: 'Stack',
-          mini: 'Tools',
           icon: ICONS.stack,
           title: 'Tools & Stack',
           desc: 'WP · PHP · REST · JS · CSS – mit System, nicht nur „kann ich“.',
-          metaPills: ['WP Internals', 'Contracts', 'Frontend'],
-          metaInfo: 'Solide Basis, kein Buzzword.',
-          slides: [
-            { img: placeholderImg('stack-wp'),       title:'WordPress Internals', text:'Hooks, CPT, Meta, Admin Screens, Upgrade Paths.' },
-            { img: placeholderImg('stack-rest'),     title:'REST Contracts',      text:'Schema, auth, cache – stabile Clients.' },
-            { img: placeholderImg('stack-frontend'), title:'Frontend Systems',    text:'Observer patterns, motion, a11y – clean.' },
-          ],
+          info: 'Ich arbeite pragmatisch: WordPress intern verstehen, REST sauber halten, UI nachvollziehbar bauen – damit Projekte langfristig stabil bleiben.'
         },
       ];
 
@@ -814,10 +463,7 @@
 
         btn.innerHTML = `
           <img class="tabMascot" src="${d.icon}" alt="" loading="lazy">
-          <span class="tabLabel">
-            <span class="tabName">${d.tab}</span>
-            <span class="tabMini">${d.mini || ''}</span>
-          </span>
+          <span>${d.tab}</span>
         `;
         tabsFrag.appendChild(btn);
 
@@ -825,53 +471,17 @@
         sec.className = 'section';
         sec.id = d.id;
 
-        const bars = (d.slides || []).map((_, i) =>
-          `<span class="pagiBar ${i===0?'is-active':''}" data-bar="${i}"></span>`
-        ).join('');
-
-        const slidesHtml = (d.slides || []).map((s, i) => `
-          <article class="slide" data-slide="${i}">
-            <div class="slideMedia">
-              <img src="${s.img}" alt="" loading="lazy">
-            </div>
-            <div class="slideBody">
-              <h3 class="slideTitle">${s.title}</h3>
-              <p class="slideText">${s.text}</p>
-            </div>
-          </article>
-        `).join('');
-
-        const pills = (d.metaPills || []).map(p =>
-          `<span class="secMetaPill">${p}</span>`
-        ).join('');
-
         sec.innerHTML = `
           <div class="secTitleRow">
             <img class="secIcon" src="${d.icon}" alt="" loading="lazy">
             <div class="secHeadText">
               <h2 class="secTitle">${d.title}</h2>
               <p class="secDesc">${d.desc}</p>
-
-              <div class="secMetaRow">
-                ${pills}
-                <span class="secMetaInfo">${d.metaInfo || ''}</span>
-              </div>
             </div>
           </div>
 
-          <div class="slider" data-slider>
-            <button class="sliderArrow left" type="button" aria-label="Zurück">‹</button>
-            <button class="sliderArrow right" type="button" aria-label="Weiter">›</button>
-
-            <div class="sliderViewport" data-viewport>
-              ${slidesHtml}
-            </div>
-
-            <div class="sliderControls">
-              <div class="pagiBox" data-pagination>
-                ${bars}
-              </div>
-            </div>
+          <div class="infoBox">
+            <p>${d.info}</p>
           </div>
         `;
         secFrag.appendChild(sec);
@@ -907,7 +517,7 @@
       }
 
       function applyFixed(){
-        // ✅ Mobile: no JS fixed. Sticky only (more stable on iOS/Android).
+        // ✅ Mobile: JS-fixed off (iOS/Android stable). Sticky alone is enough.
         if (isMobileNow()){
           tabsWrap.classList.remove('is-fixed');
           tabsSpacer.style.height = '0px';
@@ -999,151 +609,6 @@
         applyFixed();
         updateActiveFromScroll();
       }, { passive:true });
-
-      const lightbox = (() => {
-        const el = document.createElement('div');
-        el.className = 'lightbox';
-        el.innerHTML = `
-          <div class="lightboxInner" role="dialog" aria-modal="true" aria-label="Bild Vollansicht">
-            <button class="lightboxClose" type="button" aria-label="Schließen">✕</button>
-            <img class="lightboxImg" alt="">
-            <div class="lightboxHint">ESC / Klick außen zum Schließen</div>
-          </div>
-        `;
-        document.body.appendChild(el);
-
-        const img   = el.querySelector('.lightboxImg');
-        const close = el.querySelector('.lightboxClose');
-
-        function open(src){
-          if (!src) return;
-          img.src = src;
-          el.classList.add('is-open');
-          document.documentElement.style.overflow = 'hidden';
-        }
-
-        function hide(){
-          el.classList.remove('is-open');
-          document.documentElement.style.overflow = '';
-        }
-
-        close.addEventListener('click', hide);
-        el.addEventListener('click', (e) => { if (e.target === el) hide(); });
-
-        window.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && el.classList.contains('is-open')) hide();
-        });
-
-        return { open, hide };
-      })();
-
-      function setupSlider(sliderEl){
-        const viewport = sliderEl.querySelector('[data-viewport]');
-        const slides   = Array.from(sliderEl.querySelectorAll('[data-slide]'));
-        const leftBtn  = sliderEl.querySelector('.sliderArrow.left');
-        const rightBtn = sliderEl.querySelector('.sliderArrow.right');
-        const bars     = Array.from(sliderEl.querySelectorAll('[data-bar]'));
-
-        if (!viewport || slides.length === 0) return;
-
-        viewport.addEventListener('click', (e) => {
-          const slide = e.target.closest('.slide');
-          if (!slide) return;
-          const img = slide.querySelector('.slideMedia img');
-          if (!img) return;
-          lightbox.open(img.currentSrc || img.src);
-        });
-
-        let activeIndex = 0;
-        let raf = 0;
-
-        let prog = false;
-        let progTimer = 0;
-        function setProg(ms = 450){
-          prog = true;
-          clearTimeout(progTimer);
-          progTimer = setTimeout(() => { prog = false; }, ms);
-        }
-
-        function refreshBars(index){
-          bars.forEach((b, i) => {
-            b.classList.remove('is-active');
-            if (i === index){
-              b.classList.add('is-active');
-              void b.offsetWidth;
-              b.classList.add('is-active');
-            }
-          });
-        }
-
-        function snapTo(index){
-          const n = slides.length;
-          if (!n) return;
-
-          const raw = index;
-          let i = raw % n;
-          if (i < 0) i += n;
-
-          const wrapped =
-            (raw < 0 && activeIndex === 0) ||
-            (raw >= n && activeIndex === n - 1);
-
-          activeIndex = i;
-          refreshBars(activeIndex);
-
-          const slide = slides[i];
-          if (!slide) return;
-          const x = slide.offsetLeft - 2;
-
-          setProg(wrapped ? 120 : 450);
-          viewport.scrollTo({ left: x, behavior: wrapped ? 'auto' : 'smooth' });
-        }
-
-        function detectActive(){
-          if (prog) return;
-
-          const left = viewport.scrollLeft;
-          const max = viewport.scrollWidth - viewport.clientWidth;
-          const EPS = 2;
-
-          if (left <= EPS){
-            if (activeIndex !== 0){ activeIndex = 0; refreshBars(activeIndex); }
-            return;
-          }
-
-          if (left >= max - EPS){
-            const last = slides.length - 1;
-            if (activeIndex !== last){ activeIndex = last; refreshBars(activeIndex); }
-            return;
-          }
-
-          let best = 0;
-          let bestDist = Infinity;
-
-          for (let i=0;i<slides.length;i++){
-            const d = Math.abs(slides[i].offsetLeft - left);
-            if (d < bestDist){ bestDist = d; best = i; }
-          }
-
-          if (best !== activeIndex){
-            activeIndex = best;
-            refreshBars(activeIndex);
-          }
-        }
-
-        leftBtn?.addEventListener('click', () => snapTo(activeIndex - 1));
-        rightBtn?.addEventListener('click', () => snapTo(activeIndex + 1));
-        bars.forEach((bar, i) => bar.addEventListener('click', () => snapTo(i)));
-
-        viewport.addEventListener('scroll', () => {
-          cancelAnimationFrame(raf);
-          raf = requestAnimationFrame(detectActive);
-        }, { passive:true });
-
-        refreshBars(0);
-      }
-
-      document.querySelectorAll('[data-slider]').forEach(setupSlider);
     })();
   </script>
 </body>
